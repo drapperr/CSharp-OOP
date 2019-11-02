@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhombusOfStars", "RhombusOfStars\RhombusOfStars.csproj", "{ABD48F29-4564-48B5-A3A4-D9693702F745}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RhombusOfStars", "RhombusOfStars\RhombusOfStars.csproj", "{ABD48F29-4564-48B5-A3A4-D9693702F745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointInRectangle", "Point in Rectangle\PointInRectangle.csproj", "{387D9284-3CAC-41AE-A83D-76A5F4316489}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P03_StudentSystem", "P03_StudentSystem\P03_StudentSystem.csproj", "{6969650F-99C3-44B4-BDA3-2E867DF93D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelReservation", "HotelReservation\HotelReservation.csproj", "{0D335812-7DBA-4207-B3B2-90302ABDDF28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{ABD48F29-4564-48B5-A3A4-D9693702F745}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABD48F29-4564-48B5-A3A4-D9693702F745}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABD48F29-4564-48B5-A3A4-D9693702F745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{387D9284-3CAC-41AE-A83D-76A5F4316489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387D9284-3CAC-41AE-A83D-76A5F4316489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387D9284-3CAC-41AE-A83D-76A5F4316489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387D9284-3CAC-41AE-A83D-76A5F4316489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6969650F-99C3-44B4-BDA3-2E867DF93D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6969650F-99C3-44B4-BDA3-2E867DF93D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6969650F-99C3-44B4-BDA3-2E867DF93D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6969650F-99C3-44B4-BDA3-2E867DF93D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D335812-7DBA-4207-B3B2-90302ABDDF28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D335812-7DBA-4207-B3B2-90302ABDDF28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D335812-7DBA-4207-B3B2-90302ABDDF28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D335812-7DBA-4207-B3B2-90302ABDDF28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
