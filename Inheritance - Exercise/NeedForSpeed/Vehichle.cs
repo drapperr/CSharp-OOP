@@ -4,7 +4,7 @@
     {
         private const double DefaultFuelConsumption = 1.25;
 
-        public Vehichle(int horsePower,double fuel)
+        public Vehichle(int horsePower, double fuel)
         {
             this.HorsePower = horsePower;
             this.Fuel = fuel;
@@ -18,7 +18,10 @@
 
         public virtual void Drive(double kilometers)
         {
-            this.Fuel -= kilometers * FuelConsumption;
+            if (this.Fuel - kilometers * FuelConsumption >= 0)
+            {
+                this.Fuel -= kilometers * FuelConsumption;
+            }
         }
     }
 }
