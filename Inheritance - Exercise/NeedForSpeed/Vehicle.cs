@@ -1,10 +1,10 @@
 ﻿namespace NeedForSpeed
 {
-    public class Vehichle
+    public class Vehicle
     {
         private const double DefaultFuelConsumption = 1.25;
 
-        public Vehichle(int horsePower, double fuel)
+        public Vehicle(int horsePower, double fuel)
         {
             this.HorsePower = horsePower;
             this.Fuel = fuel;

@@ -1,6 +1,6 @@
 ﻿namespace NeedForSpeed
 {
-    public class Car : Vehichle
+    public class Car : Vehicle
     {
         private const double DefaultFuelConsumption = 3.0;
 
