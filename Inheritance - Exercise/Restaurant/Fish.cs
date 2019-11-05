@@ -2,8 +2,9 @@
 {
     public class Fish : MainDish
     {
-        public Fish(string name, decimal price, double grams = 22)
-            : base(name, price, grams)
+        private const double Grams = 22;
+        public Fish(string name, decimal price)
+            : base(name, price, Grams)
         {
         }
     }
