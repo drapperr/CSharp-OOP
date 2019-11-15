@@ -18,8 +18,6 @@ namespace Vehicles
 
         public double FuelConsumption { get; protected set; }
 
-        public double AcFuelConsumption { get; protected set; }
-
         public double TankCapacity { get; protected set; }
 
         public virtual void Drive(double distance)
@@ -28,9 +26,11 @@ namespace Vehicles
             {
                 Fuel -= distance * FuelConsumption;
                 Console.WriteLine($"{this.GetType().Name} travelled {distance} km");
-                return;
             }
-            Console.WriteLine($"{this.GetType().Name} needs refueling");
+            else
+            {
+                Console.WriteLine($"{this.GetType().Name} needs refueling");
+            }
         }
 
         public virtual void Refuel(double liters)

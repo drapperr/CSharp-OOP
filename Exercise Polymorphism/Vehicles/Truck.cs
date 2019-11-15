@@ -12,20 +12,17 @@ namespace Vehicles
         public Truck(double fuel, double fuelConsumption, double tankCapacity)
             : base(fuel, fuelConsumption, tankCapacity)
         {
-            fuelConsumption += acConsumption;
+            this.FuelConsumption += acConsumption;
         }
 
         public override void Refuel(double liters)
         {
-            if (liters <= 0)
-            {
-                throw new ArgumentException("Fuel must be a positive number");
-            }
             if (Fuel + liters > TankCapacity)
             {
                 throw new ArgumentException($"Cannot fit {liters} fuel in the tank");
             }
-            Fuel += liters * 0.95;
+            liters *= 0.95;
+            base.Refuel(liters);
         }
     }
 }

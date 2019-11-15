@@ -13,6 +13,7 @@
         {
             FuelConsumption += acConsumption;
             base.Drive(distance);
+            FuelConsumption -= acConsumption;
         }
 
         public void DriveEmpty(double distance) => base.Drive(distance);
