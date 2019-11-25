@@ -26,7 +26,7 @@ namespace MortalEngines.Entities
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    this.name = value;
+                    throw new ArgumentNullException("Machine name cannot be null or empty.");
                 }
 
                 this.name = value;
