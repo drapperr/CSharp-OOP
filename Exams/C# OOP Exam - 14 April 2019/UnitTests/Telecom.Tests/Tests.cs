@@ -7,12 +7,14 @@ namespace Telecom.Tests
     public class Tests
     {
         [Test]
-        public void Make_IsNullOrEmpty()
+        public void ConstructorShouldThrowExceptionWhenMakeIsNullOrWhitespace()
         {
-            Phone phone;
-            var ex = Assert.Throws<ArgumentException>(() => phone = new Phone(null, "myModel"));
+            var ex = Assert.Throws<ArgumentException>(() =>
+                new Phone(null, "myModel"));
             Assert.That(ex.Message, Is.EqualTo("Invalid Make!"));
         }
+
+        [Test]
         public void Make_IsValid()
         {
             Phone phone = new Phone("myMake", "myModel");
@@ -23,9 +25,12 @@ namespace Telecom.Tests
         public void Model_IsNullOrEmpty()
         {
             Phone phone;
-            var ex = Assert.Throws<ArgumentException>(() => phone = new Phone("myMake", null));
+            var ex = Assert.Throws<ArgumentException>(() 
+                => phone = new Phone("myMake", null));
             Assert.That(ex.Message, Is.EqualTo("Invalid Model!"));
         }
+
+        [Test]
         public void Model_IsValid()
         {
             Phone phone = new Phone("myMake", "myModel");
