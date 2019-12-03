@@ -3,42 +3,38 @@ using System;
 namespace Telecom.Tests
 {
     using NUnit.Framework;
+    using Telecom;
 
     public class Tests
     {
         [Test]
-        public void ConstructorShouldThrowExceptionWhenMakeIsNullOrWhitespace()
-        {
-            var ex = Assert.Throws<ArgumentException>(() =>
-                new Phone(null, "myModel"));
-            Assert.That(ex.Message, Is.EqualTo("Invalid Make!"));
-        }
-
-        [Test]
-        public void Make_IsValid()
+        public void ConstructorShouldSetCorrectValues()
         {
             Phone phone = new Phone("myMake", "myModel");
-            Assert.AreEqual("myMake",phone.Make);
-        }
 
-        [Test]
-        public void Model_IsNullOrEmpty()
-        {
-            Phone phone;
-            var ex = Assert.Throws<ArgumentException>(() 
-                => phone = new Phone("myMake", null));
-            Assert.That(ex.Message, Is.EqualTo("Invalid Model!"));
-        }
-
-        [Test]
-        public void Model_IsValid()
-        {
-            Phone phone = new Phone("myMake", "myModel");
+            Assert.AreEqual("myMake", phone.Make);
             Assert.AreEqual("myModel", phone.Model);
+            Assert.AreEqual(0, phone.Count);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        public void ConstructorShouldThrowExceptionWhenMakeIsNullOrEmpty(string make)
+        {
+            Assert.Throws<ArgumentException>(() =>
+                new Phone(make, "myModel"));
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        public void ConstructorShouldThrowExceptionWhenMadeIsNullOrEmpty(string model)
+        {
+            Assert.Throws<ArgumentException>(() 
+                => new Phone("myMake", model));
         }
 
         [Test]
-        public void PhoneBookCount_Test()
+        public void AddContactMethodShouldSetACorrectContacts()
         {
             Phone phone = new Phone("Nokia", "3310");
             Assert.AreEqual(0, phone.Count);
@@ -51,23 +47,30 @@ namespace Telecom.Tests
         }
 
         [Test]
-        public void AddContact_Test()
+        public void AddContactMethodShouldThrowExceptionIfContactNameIsExists()
         {
             Phone phone = new Phone("Nokia", "3310");
             phone.AddContact("ivo", "1111");
-            var ex = Assert.Throws<InvalidOperationException>(() => phone.AddContact("ivo", "1111"));
-            Assert.AreEqual("Person already exists!",ex.Message);
+            Assert.Throws<InvalidOperationException>(() 
+                => phone.AddContact("ivo", "5423"));
+        }
+
+        [Test] 
+        public void CallMethodShouldThrowExceptionIfContactNameIsNotExists()
+        {
+            Phone phone = new Phone("Nokia", "3310");
+            phone.AddContact("ivo", "1111");
+            Assert.Throws<InvalidOperationException>(()
+                => phone.Call("stoyan"));
         }
 
         [Test]
-        public void CallContact_Test()
+        public void CallMethodShouldCallCorrectly()
         {
             Phone phone = new Phone("Nokia", "3310");
-            var ex = Assert.Throws<InvalidOperationException>(() => phone.Call("stoyan"));
-            Assert.AreEqual("Person doesn't exists!", ex.Message);
             phone.AddContact("stoyan", "1234");
             string result = phone.Call("stoyan");
-            Assert.AreEqual("Calling stoyan - 1234...",result);
+            Assert.AreEqual("Calling stoyan - 1234...", result);
         }
     }
 }
