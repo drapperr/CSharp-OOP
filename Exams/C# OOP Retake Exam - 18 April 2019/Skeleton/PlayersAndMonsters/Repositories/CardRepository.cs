@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PlayersAndMonsters.Models.Cards.Contracts;
 using PlayersAndMonsters.Repositories.Contracts;
 
@@ -9,7 +8,7 @@ namespace PlayersAndMonsters.Repositories
 {
     public class CardRepository : ICardRepository
     {
-        private List<ICard> cards;
+        private readonly List<ICard> cards;
 
         public CardRepository()
         {
