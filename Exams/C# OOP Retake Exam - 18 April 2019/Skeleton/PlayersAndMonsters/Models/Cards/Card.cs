@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using PlayersAndMonsters.Models.Cards.Contracts;
 
 namespace PlayersAndMonsters.Models.Cards
@@ -48,7 +46,7 @@ namespace PlayersAndMonsters.Models.Cards
             get => this.healthPoints;
             private set
             {
-                if (value<0)
+                if (value < 0)
                 {
                     throw new ArgumentException("Card's HP cannot be less than zero.");
                 }
