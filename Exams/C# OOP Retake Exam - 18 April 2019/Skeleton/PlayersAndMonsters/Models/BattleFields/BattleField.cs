@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PlayersAndMonsters.Models.BattleFields.Contracts;
-using PlayersAndMonsters.Models.Cards.Contracts;
 using PlayersAndMonsters.Models.Players;
 using PlayersAndMonsters.Models.Players.Contracts;
 
@@ -38,8 +35,8 @@ namespace PlayersAndMonsters.Models.BattleFields
                 }
             }
 
-            attackPlayer.Health += attackPlayer.CardRepository.Cards.Sum(x => x.DamagePoints);
-            enemyPlayer.Health += enemyPlayer.CardRepository.Cards.Sum(x => x.DamagePoints);
+            attackPlayer.Health += attackPlayer.CardRepository.Cards.Sum(x => x.HealthPoints);
+            enemyPlayer.Health += enemyPlayer.CardRepository.Cards.Sum(x => x.HealthPoints);
 
             int attackPlayerDamage = attackPlayer.CardRepository.Cards.Sum(x => x.DamagePoints);
             int enemyPlayerDamage = enemyPlayer.CardRepository.Cards.Sum(x => x.DamagePoints);
