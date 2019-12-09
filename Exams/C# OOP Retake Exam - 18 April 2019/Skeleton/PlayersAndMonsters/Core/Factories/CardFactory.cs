@@ -8,16 +8,18 @@ namespace PlayersAndMonsters.Core.Factories
     {
         public ICard CreateCard(string type, string name)
         {
+            Card card = null;
+
             if (type + "Card" == nameof(MagicCard))
             {
-                return new MagicCard(name);
+                card = new MagicCard(name);
             }
             else if (type + "Card" == nameof(TrapCard))
             {
-                return new TrapCard(name);
+                card = new TrapCard(name);
             }
 
-            return null;
+            return card;
         }
     }
 }

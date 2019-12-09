@@ -6,8 +6,6 @@ using PlayersAndMonsters.Repositories.Contracts;
 
 namespace PlayersAndMonsters.Core
 {
-    using System;
-
     using Contracts;
 
     public class ManagerController : IManagerController
@@ -24,7 +22,7 @@ namespace PlayersAndMonsters.Core
         public string AddPlayer(string type, string username)
         {
             PlayerFactory playerFactory = new PlayerFactory();
-            var player =playerFactory.CreatePlayer(type, username);
+            var player = playerFactory.CreatePlayer(type, username);
             playerRepository.Add(player);
 
             return $"Successfully added player of type {type} with username: {username}";
@@ -52,10 +50,11 @@ namespace PlayersAndMonsters.Core
             var attacker = playerRepository.Find(attackUser);
             var enemy = playerRepository.Find(enemyUser);
 
-            BattleField battleField=new BattleField();
+            BattleField battleField = new BattleField();
             battleField.Fight(attacker, enemy);
 
             return $"Attack user health {attacker.Health} - Enemy user health {enemy.Health}";
+
         }
 
         public string Report()
@@ -66,6 +65,7 @@ namespace PlayersAndMonsters.Core
             {
                 sb.AppendLine(
                     $"Username: {player.Username} - Health: {player.Health} – Cards {player.CardRepository.Count}");
+
                 foreach (var card in player.CardRepository.Cards)
                 {
                     sb.AppendLine($"Card: {card.Name} - Damage: {card.DamagePoints}");
