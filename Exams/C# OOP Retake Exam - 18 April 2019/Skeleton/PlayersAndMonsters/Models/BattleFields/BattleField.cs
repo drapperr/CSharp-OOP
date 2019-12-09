@@ -10,9 +10,9 @@ namespace PlayersAndMonsters.Models.BattleFields
     {
         public void Fight(IPlayer attackPlayer, IPlayer enemyPlayer)
         {
-            if (attackPlayer.IsDead||enemyPlayer.IsDead)
+            if (attackPlayer.IsDead || enemyPlayer.IsDead)
             {
-               throw new ArgumentException("Player is dead!");
+                throw new ArgumentException("Player is dead!");
             }
 
             if (attackPlayer is Beginner)

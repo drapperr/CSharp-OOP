@@ -15,7 +15,7 @@ namespace PlayersAndMonsters.Models.Players
             this.Username = username;
             this.Health = health;
         }
-        public ICardRepository CardRepository { get;} //TODO
+        public ICardRepository CardRepository { get;}
 
         public string Username
         {
@@ -55,15 +55,7 @@ namespace PlayersAndMonsters.Models.Players
                 throw new ArgumentException("Damage points cannot be less than zero.");
             }
 
-            int currentHealth = this.health;
-            currentHealth -= damagePoints;
-
-            if (currentHealth < 0)
-            {
-                currentHealth = 0;
-            }
-
-            this.health = currentHealth;
+            this.health = Math.Max(this.health-damagePoints,0);
         }
     }
 }
