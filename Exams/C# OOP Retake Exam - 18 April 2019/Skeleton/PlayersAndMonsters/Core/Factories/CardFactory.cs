@@ -8,7 +8,7 @@ namespace PlayersAndMonsters.Core.Factories
     {
         public ICard CreateCard(string type, string name)
         {
-            Card card = null;
+            ICard card = null;
 
             if (type + "Card" == nameof(MagicCard))
             {
