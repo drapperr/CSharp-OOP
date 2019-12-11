@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using PlayersAndMonsters.Core.Factories;
+using PlayersAndMonsters.Core.Factories.Contracts;
 using PlayersAndMonsters.Models.BattleFields;
+using PlayersAndMonsters.Models.BattleFields.Contracts;
 using PlayersAndMonsters.Repositories;
 using PlayersAndMonsters.Repositories.Contracts;
 
@@ -12,16 +14,21 @@ namespace PlayersAndMonsters.Core
     {
         private IPlayerRepository playerRepository;
         private ICardRepository cardRepository;
+        private IPlayerFactory playerFactory;
+        private ICardFactory cardFactory;
+        private IBattleField battleField;
 
         public ManagerController()
         {
             playerRepository = new PlayerRepository();
             cardRepository = new CardRepository();
+            playerFactory = new PlayerFactory();
+            cardFactory=new CardFactory();
+            battleField=new BattleField();
         }
 
         public string AddPlayer(string type, string username)
         {
-            PlayerFactory playerFactory = new PlayerFactory();
             var player = playerFactory.CreatePlayer(type, username);
             playerRepository.Add(player);
 
@@ -30,7 +37,6 @@ namespace PlayersAndMonsters.Core
 
         public string AddCard(string type, string name)
         {
-            CardFactory cardFactory = new CardFactory();
             var card = cardFactory.CreateCard(type, name);
             cardRepository.Add(card);
 
@@ -40,7 +46,8 @@ namespace PlayersAndMonsters.Core
         public string AddPlayerCard(string userName, string cardName)
         {
             var card = cardRepository.Find(cardName);
-            playerRepository.Find(userName).CardRepository.Add(card);
+            var player = playerRepository.Find(userName);
+            player.CardRepository.Add(card);
 
             return $"Successfully added card: {cardName} to user: {userName}";
         }
@@ -50,11 +57,9 @@ namespace PlayersAndMonsters.Core
             var attacker = playerRepository.Find(attackUser);
             var enemy = playerRepository.Find(enemyUser);
 
-            BattleField battleField = new BattleField();
             battleField.Fight(attacker, enemy);
 
             return $"Attack user health {attacker.Health} - Enemy user health {enemy.Health}";
-
         }
 
         public string Report()
@@ -64,7 +69,7 @@ namespace PlayersAndMonsters.Core
             foreach (var player in playerRepository.Players)
             {
                 sb.AppendLine(
-                    $"Username: {player.Username} - Health: {player.Health} – Cards {player.CardRepository.Count}");
+                    $"Username: {player.Username} - Health: {player.Health} - Cards {player.CardRepository.Cards.Count}");
 
                 foreach (var card in player.CardRepository.Cards)
                 {

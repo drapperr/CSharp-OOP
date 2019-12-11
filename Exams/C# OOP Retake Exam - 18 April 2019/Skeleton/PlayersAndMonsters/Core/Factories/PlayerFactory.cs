@@ -9,16 +9,18 @@ namespace PlayersAndMonsters.Core.Factories
     {
         public IPlayer CreatePlayer(string type, string username)
         {
+            IPlayer player = null;
+
             if (type == nameof(Beginner))
             {
-                return new Beginner(new CardRepository(), username);
+                player = new Beginner(new CardRepository(), username);
             }
             else if (type == nameof(Advanced))
             {
-                return new Advanced(new CardRepository(), username);
+                player = new Advanced(new CardRepository(), username);
             }
 
-            return null;
+            return player;
         }
     }
 }
