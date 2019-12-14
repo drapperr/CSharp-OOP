@@ -1,61 +1,68 @@
-﻿using System;
-
-namespace PlayersAndMonsters.Core.Contracts
+﻿namespace PlayersAndMonsters.Core
 {
+    using System;
+
+    using Contracts;
+
     public class Engine : IEngine
     {
+        private readonly IManagerController managerController;
+
+        public Engine()
+        {
+            this.managerController = new ManagerController();
+        }
+
         public void Run()
         {
-            ManagerController managerController = new ManagerController();
-
             while (true)
             {
                 string[] input = Console.ReadLine().Split();
+
                 string command = input[0];
+
+                string result = string.Empty;
 
                 try
                 {
-                    if (command == "AddPlayer")
+                    if (command== "Exit")
+                    {
+                        Environment.Exit(0);
+                    }
+                    else if (command== "AddPlayer")
                     {
                         string type = input[1];
                         string name = input[2];
 
-                        string result = managerController.AddPlayer(type, name);
-                        Console.WriteLine(result);
+                        result = this.managerController.AddPlayer(type, name);
                     }
                     else if (command == "AddCard")
                     {
                         string type = input[1];
                         string name = input[2];
 
-                        string result = managerController.AddCard(type, name);
-                        Console.WriteLine(result);
+                        result = this.managerController.AddCard(type, name);
                     }
                     else if (command == "AddPlayerCard")
                     {
                         string userName = input[1];
                         string cardName = input[2];
 
-                        string result = managerController.AddPlayerCard(userName, cardName);
-                        Console.WriteLine(result);
+                        result = this.managerController.AddPlayerCard(userName, cardName);
                     }
                     else if (command == "Fight")
                     {
-                        string attacker = input[1];
-                        string enemy = input[2];
+                        string attackUser = input[1];
+                        string enemyUser = input[2];
 
-                        string result = managerController.Fight(attacker, enemy);
-                        Console.WriteLine(result);
+                        result = this.managerController.Fight(attackUser, enemyUser);
                     }
                     else if (command == "Report")
                     {
-                        string result = managerController.Report();
-                        Console.WriteLine(result);
+                        result = this.managerController.Report();
                     }
-                    else if (command == "Exit")
-                    {
-                        Environment.Exit(0);
-                    }
+
+                    Console.WriteLine(result);
                 }
                 catch (Exception ex)
                 {

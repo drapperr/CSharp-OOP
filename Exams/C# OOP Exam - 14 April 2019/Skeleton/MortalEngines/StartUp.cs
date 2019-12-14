@@ -1,8 +1,8 @@
-﻿using MortalEngines.Core;
-using MortalEngines.Core.Contracts;
-
-namespace MortalEngines
+﻿namespace MortalEngines
 {
+    using Core;
+    using Core.Contracts;
+
     public class StartUp
     {
         public static void Main()
