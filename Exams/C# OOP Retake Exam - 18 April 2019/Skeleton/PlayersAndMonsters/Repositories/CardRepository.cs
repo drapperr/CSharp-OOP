@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PlayersAndMonsters.Models.Cards.Contracts;
-using PlayersAndMonsters.Repositories.Contracts;
-
-namespace PlayersAndMonsters.Repositories
+﻿namespace PlayersAndMonsters.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using PlayersAndMonsters.Models.Cards.Contracts;
+    using Contracts;
+
     public class CardRepository : ICardRepository
     {
         private readonly List<ICard> cards;
@@ -15,7 +16,7 @@ namespace PlayersAndMonsters.Repositories
             this.cards = new List<ICard>();
         }
 
-        public int Count => cards.Count;
+        public int Count => this.cards.Count;
 
         public IReadOnlyCollection<ICard> Cards => this.cards.AsReadOnly();
 
@@ -23,30 +24,30 @@ namespace PlayersAndMonsters.Repositories
         {
             if (card == null)
             {
-                throw new ArgumentException("Card cannot be null!");
+                throw new ArgumentException("Card cannot be null");
             }
 
-            if (cards.Any(c => c.Name == card.Name))
+            if (this.cards.Any(p => p.Name == card.Name))
             {
                 throw new ArgumentException($"Card {card.Name} already exists!");
             }
 
-            cards.Add(card);
+            this.cards.Add(card);
         }
 
         public bool Remove(ICard card)
         {
             if (card == null)
             {
-                throw new ArgumentException("Card cannot be null!");
+                throw new ArgumentException("Card cannot be null");
             }
 
-            return cards.Remove(card);
+            return this.cards.Remove(card);
         }
 
         public ICard Find(string name)
         {
-            return cards.FirstOrDefault(c => c.Name == name);
+            return this.cards.FirstOrDefault(p => p.Name == name);
         }
     }
 }

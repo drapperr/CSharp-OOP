@@ -1,13 +1,14 @@
-﻿using PlayersAndMonsters.Core.Contracts;
-
-namespace PlayersAndMonsters
+﻿namespace PlayersAndMonsters
 {
+    using Core;
+    using Core.Contracts;
+
     public class StartUp
     {
         public static void Main(string[] args)
         {
-            Engine engine = new Engine();
-            engine.Run();
+           IEngine engine =new Engine();
+           engine.Run();
         }
     }
 }

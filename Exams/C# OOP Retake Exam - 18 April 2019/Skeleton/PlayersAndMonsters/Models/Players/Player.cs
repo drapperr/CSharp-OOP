@@ -1,9 +1,9 @@
-﻿using System;
-using PlayersAndMonsters.Models.Players.Contracts;
-using PlayersAndMonsters.Repositories.Contracts;
-
-namespace PlayersAndMonsters.Models.Players
+﻿namespace PlayersAndMonsters.Models.Players
 {
+    using System;
+    using Contracts;
+    using PlayersAndMonsters.Repositories.Contracts;
+
     public abstract class Player : IPlayer
     {
         private string username;
@@ -11,11 +11,12 @@ namespace PlayersAndMonsters.Models.Players
 
         protected Player(ICardRepository cardRepository, string username, int health)
         {
-            CardRepository = cardRepository;
+            this.CardRepository = cardRepository;
             this.Username = username;
             this.Health = health;
         }
-        public ICardRepository CardRepository { get;}
+
+        public ICardRepository CardRepository { get; }
 
         public string Username
         {
@@ -43,19 +44,18 @@ namespace PlayersAndMonsters.Models.Players
 
                 this.health = value;
             }
-
         }
 
         public bool IsDead => this.Health == 0;
 
         public void TakeDamage(int damagePoints)
         {
-            if (damagePoints < 0)
+            if (damagePoints<0)
             {
                 throw new ArgumentException("Damage points cannot be less than zero.");
             }
 
-            this.health = Math.Max(this.health-damagePoints,0);
+            this.Health = Math.Max(this.Health - damagePoints, 0);
         }
     }
 }

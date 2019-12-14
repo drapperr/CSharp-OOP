@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PlayersAndMonsters.Models.Players.Contracts;
-using PlayersAndMonsters.Repositories.Contracts;
-
-namespace PlayersAndMonsters.Repositories
+﻿namespace PlayersAndMonsters.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using PlayersAndMonsters.Models.Players.Contracts;
+    using Contracts;
+
     public class PlayerRepository : IPlayerRepository
     {
         private readonly List<IPlayer> players;
@@ -15,7 +16,7 @@ namespace PlayersAndMonsters.Repositories
             this.players = new List<IPlayer>();
         }
 
-        public int Count => players.Count;
+        public int Count => this.players.Count;
 
         public IReadOnlyCollection<IPlayer> Players => this.players.AsReadOnly();
 
@@ -31,7 +32,7 @@ namespace PlayersAndMonsters.Repositories
                 throw new ArgumentException($"Player {player.Username} already exists!");
             }
 
-            players.Add(player);
+            this.players.Add(player);
         }
 
         public bool Remove(IPlayer player)
@@ -41,12 +42,12 @@ namespace PlayersAndMonsters.Repositories
                 throw new ArgumentException("Player cannot be null");
             }
 
-            return players.Remove(player);
+            return this.players.Remove(player);
         }
 
         public IPlayer Find(string username)
         {
-            return players.FirstOrDefault(p => p.Username == username);
+            return this.players.FirstOrDefault(p => p.Username == username);
         }
     }
 }
