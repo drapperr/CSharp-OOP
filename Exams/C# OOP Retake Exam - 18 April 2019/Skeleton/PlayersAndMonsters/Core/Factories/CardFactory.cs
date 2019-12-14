@@ -1,25 +1,25 @@
-﻿using PlayersAndMonsters.Core.Factories.Contracts;
-using PlayersAndMonsters.Models.Cards;
-using PlayersAndMonsters.Models.Cards.Contracts;
-
-namespace PlayersAndMonsters.Core.Factories
+﻿namespace PlayersAndMonsters.Core.Factories
 {
+    using Contracts;
+    using Models.Cards;
+    using PlayersAndMonsters.Models.Cards.Contracts;
+
     public class CardFactory : ICardFactory
     {
         public ICard CreateCard(string type, string name)
         {
-            ICard card = null;
-
-            if (type + "Card" == nameof(MagicCard))
+            if (type+"Card"==nameof(MagicCard))
             {
-                card = new MagicCard(name);
+               return new MagicCard(name);
             }
             else if (type + "Card" == nameof(TrapCard))
             {
-                card = new TrapCard(name);
+                return new TrapCard(name);
             }
-
-            return card;
+            else
+            {
+                return null;
+            }
         }
     }
 }

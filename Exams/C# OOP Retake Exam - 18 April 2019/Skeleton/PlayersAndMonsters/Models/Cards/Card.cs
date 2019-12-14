@@ -1,8 +1,8 @@
-﻿using System;
-using PlayersAndMonsters.Models.Cards.Contracts;
-
-namespace PlayersAndMonsters.Models.Cards
+﻿namespace PlayersAndMonsters.Models.Cards
 {
+    using System;
+    using Contracts;
+
     public abstract class Card : ICard
     {
         private string name;
@@ -15,6 +15,7 @@ namespace PlayersAndMonsters.Models.Cards
             this.DamagePoints = damagePoints;
             this.HealthPoints = healthPoints;
         }
+
         public string Name
         {
             get => this.name;
@@ -28,12 +29,13 @@ namespace PlayersAndMonsters.Models.Cards
                 this.name = value;
             }
         }
+
         public int DamagePoints
         {
             get => this.damagePoints;
             set
             {
-                if (value < 0)
+                if (value<0)
                 {
                     throw new ArgumentException("Card's damage points cannot be less than zero.");
                 }
@@ -41,12 +43,13 @@ namespace PlayersAndMonsters.Models.Cards
                 this.damagePoints = value;
             }
         }
+
         public int HealthPoints
         {
             get => this.healthPoints;
             private set
             {
-                if (value < 0)
+                if (value<0)
                 {
                     throw new ArgumentException("Card's HP cannot be less than zero.");
                 }

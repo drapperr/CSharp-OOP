@@ -1,82 +1,87 @@
-﻿using System.Text;
-using PlayersAndMonsters.Core.Factories;
-using PlayersAndMonsters.Core.Factories.Contracts;
-using PlayersAndMonsters.Models.BattleFields;
-using PlayersAndMonsters.Models.BattleFields.Contracts;
-using PlayersAndMonsters.Repositories;
-using PlayersAndMonsters.Repositories.Contracts;
-
-namespace PlayersAndMonsters.Core
+﻿namespace PlayersAndMonsters.Core
 {
     using Contracts;
+    using System.Text;
+    using Common;
+    using Factories;
+    using PlayersAndMonsters.Core.Factories.Contracts;
+    using Models.BattleFields;
+    using PlayersAndMonsters.Models.BattleFields.Contracts;
+    using PlayersAndMonsters.Models.Cards.Contracts;
+    using PlayersAndMonsters.Models.Players.Contracts;
+    using Repositories;
+    using PlayersAndMonsters.Repositories.Contracts;
 
     public class ManagerController : IManagerController
     {
-        private IPlayerRepository playerRepository;
-        private ICardRepository cardRepository;
-        private IPlayerFactory playerFactory;
-        private ICardFactory cardFactory;
-        private IBattleField battleField;
+        private readonly ICardRepository cardRepository;
+        private readonly IPlayerRepository playerRepository;
+        private readonly ICardFactory cardFactory;
+        private readonly IPlayerFactory playerFactory;
+        private readonly IBattleField battleField;
 
         public ManagerController()
         {
-            playerRepository = new PlayerRepository();
-            cardRepository = new CardRepository();
-            playerFactory = new PlayerFactory();
-            cardFactory=new CardFactory();
-            battleField=new BattleField();
+            this.cardRepository=new CardRepository();
+            this.playerRepository=new PlayerRepository();
+            this.cardFactory=new CardFactory();
+            this.playerFactory=new PlayerFactory();
+            this.battleField=new BattleField();;
         }
 
         public string AddPlayer(string type, string username)
         {
-            var player = playerFactory.CreatePlayer(type, username);
-            playerRepository.Add(player);
+            IPlayer player = this.playerFactory.CreatePlayer(type, username);
 
-            return $"Successfully added player of type {type} with username: {username}";
+            this.playerRepository.Add(player);
+
+            return string.Format(ConstantMessages.SuccessfullyAddedPlayer, type, username);
         }
 
         public string AddCard(string type, string name)
         {
-            var card = cardFactory.CreateCard(type, name);
-            cardRepository.Add(card);
+            ICard card = this.cardFactory.CreateCard(type, name);
 
-            return $"Successfully added card of type {type}Card with name: {name}";
+            this.cardRepository.Add(card);
+
+            return string.Format(ConstantMessages.SuccessfullyAddedCard, type, name);
         }
 
-        public string AddPlayerCard(string userName, string cardName)
+        public string AddPlayerCard(string username, string cardName)
         {
-            var card = cardRepository.Find(cardName);
-            var player = playerRepository.Find(userName);
+            IPlayer player = this.playerRepository.Find(username);
+            ICard card = this.cardRepository.Find(cardName);
+
             player.CardRepository.Add(card);
 
-            return $"Successfully added card: {cardName} to user: {userName}";
+            return string.Format(ConstantMessages.SuccessfullyAddedPlayerWithCards, cardName, username);
         }
 
         public string Fight(string attackUser, string enemyUser)
         {
-            var attacker = playerRepository.Find(attackUser);
-            var enemy = playerRepository.Find(enemyUser);
+            IPlayer attackerPlayer = this.playerRepository.Find(attackUser);
+            IPlayer enemyPlayer = this.playerRepository.Find(enemyUser);
 
-            battleField.Fight(attacker, enemy);
+            this.battleField.Fight(attackerPlayer,enemyPlayer);
 
-            return $"Attack user health {attacker.Health} - Enemy user health {enemy.Health}";
+            return string.Format(ConstantMessages.FightInfo, attackerPlayer.Health, enemyPlayer.Health);
         }
 
         public string Report()
         {
-            var sb = new StringBuilder();
+            var sb =new StringBuilder();
 
             foreach (var player in playerRepository.Players)
             {
-                sb.AppendLine(
-                    $"Username: {player.Username} - Health: {player.Health} - Cards {player.CardRepository.Cards.Count}");
+                sb.AppendLine(string.Format(ConstantMessages.PlayerReportInfo, player.Username, player.Health,
+                    player.CardRepository.Count));
 
                 foreach (var card in player.CardRepository.Cards)
                 {
-                    sb.AppendLine($"Card: {card.Name} - Damage: {card.DamagePoints}");
+                    sb.AppendLine(string.Format(ConstantMessages.CardReportInfo,card.Name,card.DamagePoints));
                 }
 
-                sb.AppendLine("###");
+                sb.AppendLine(string.Format(ConstantMessages.DefaultReportSeparator));
             }
 
             return sb.ToString().TrimEnd();
