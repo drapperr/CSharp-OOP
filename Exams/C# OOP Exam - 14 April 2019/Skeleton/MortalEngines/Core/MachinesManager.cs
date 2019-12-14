@@ -1,182 +1,171 @@
-﻿using System;
-using System.Collections.Generic;
-using MortalEngines.Entities;
-using MortalEngines.Entities.Contracts;
-
-namespace MortalEngines.Core
+﻿namespace MortalEngines.Core
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Common;
+    using Entities;
+    using MortalEngines.Entities.Contracts;
     using Contracts;
 
     public class MachinesManager : IMachinesManager
     {
-        private Dictionary<string, IPilot> pilots;
-        private Dictionary<string, IMachine> machines;
+        private List<IPilot> pilots;
+        private List<IMachine> machines;
 
         public MachinesManager()
         {
-            pilots = new Dictionary<string, IPilot>();
-            machines = new Dictionary<string, IMachine>();
+            this.pilots = new List<IPilot>();
+            this.machines = new List<IMachine>();
         }
 
         public string HirePilot(string name)
         {
-            if (pilots.ContainsKey(name))
+            if (this.pilots.Any(p => p.Name == name))
             {
-                return $"Pilot {name} is hired already";
+                return string.Format(OutputMessages.PilotExists, name);
             }
-            else
-            {
-                pilots.Add(name, new Pilot(name));
-                return $"Pilot {name} hired";
-            }
+
+            IPilot pilot = new Pilot(name);
+            this.pilots.Add(pilot);
+
+            return string.Format(OutputMessages.PilotHired, name);
         }
 
         public string PilotReport(string pilotReporting)
         {
-            if (!pilots.ContainsKey(pilotReporting))
+            IPilot pilot = this.pilots.FirstOrDefault(p => p.Name == pilotReporting);
+
+            if (pilot == null)
             {
-                return $"Pilot {pilotReporting} could not be found";
+                return string.Format(OutputMessages.PilotNotFound, pilotReporting);
             }
 
-            return pilots[pilotReporting].Report();
+            return pilot.Report();
         }
 
         public string MachineReport(string machineName)
         {
-            if (!machines.ContainsKey(machineName))
+            IMachine machine = this.machines.FirstOrDefault(m => m.Name == machineName);
+
+            if (machine == null)
             {
-                return $"Machine {machineName} could not be found";
+                return string.Format(OutputMessages.MachineNotFound, machineName);
             }
 
-            return machines[machineName].ToString();
+            return machine.ToString();
         }
 
         public string ManufactureTank(string name, double attackPoints, double defensePoints)
         {
-            if (machines.ContainsKey(name))
+            if (machines.Any(m => m.Name == name))
             {
-                return $"Machine {name} is manufactured already";
+                return string.Format(OutputMessages.MachineExists, name);
             }
-            Tank tank=new Tank(name, attackPoints, defensePoints);
-            machines.Add(name,tank);
 
-            return $"Tank {name} manufactured - attack: {tank.AttackPoints:F2}; defense: {tank.DefensePoints:F2}";
+            IMachine tank = new Tank(name, attackPoints, defensePoints);
+            this.machines.Add(tank);
+
+            return string.Format(OutputMessages.TankManufactured, name, tank.AttackPoints, tank.DefensePoints);
         }
+
         public string ToggleTankDefenseMode(string tankName)
         {
-            if (!machines.ContainsKey(tankName))
+            ITank tank = machines.FirstOrDefault(m => m.Name == tankName) as Tank;
+
+            if (tank == null)
             {
-                return $"Machine {tankName} could not be found";
+                return string.Format(OutputMessages.MachineNotFound, tankName);
             }
 
-            if (machines[tankName] is Tank)
-            {
-                (machines[tankName] as Tank)?.ToggleDefenseMode();
-                return $"Tank {tankName} toggled defense mode";
-            }
+            tank.ToggleDefenseMode();
 
-            return $"Machine {tankName} could not be found";
+            return string.Format(OutputMessages.TankOperationSuccessful, tankName);
         }
 
         public string ManufactureFighter(string name, double attackPoints, double defensePoints)
         {
-            if (machines.ContainsKey(name))
+            if (this.machines.Any(m => m.Name == name))
             {
-                return $"Machine {name} is manufactured already";
+                return string.Format(OutputMessages.MachineExists, name);
             }
-            Fighter fighter=new Fighter(name, attackPoints, defensePoints);
-            machines.Add(name,fighter);
 
-            return $"Fighter {name} manufactured - attack: {fighter.AttackPoints:F2}; defense: {fighter.DefensePoints:F2}; aggressive: ON";
+            IMachine fighter = new Fighter(name, attackPoints, defensePoints);
+            this.machines.Add(fighter);
+
+            return string.Format(OutputMessages.FighterManufactured, name, fighter.AttackPoints, fighter.DefensePoints,
+                "ON");
         }
 
         public string ToggleFighterAggressiveMode(string fighterName)
         {
-            if (!machines.ContainsKey(fighterName))
+            IFighter fighter = machines.FirstOrDefault(m => m.Name == fighterName) as Fighter;
+
+            if (fighter == null)
             {
-                return $"Machine {fighterName} could not be found";
+                return string.Format(OutputMessages.MachineNotFound, fighterName);
             }
 
-            if (machines[fighterName] is Fighter)
-            {
-                (machines[fighterName] as Fighter)?.ToggleAggressiveMode();         //??????
-                return $"Fighter {fighterName} toggled aggressive mode";
-            }
+            fighter.ToggleAggressiveMode();
 
-            return $"Machine {fighterName} could not be found";
+            return string.Format(OutputMessages.FighterOperationSuccessful, fighterName);
         }
 
         public string EngageMachine(string selectedPilotName, string selectedMachineName)
         {
-            if (!pilots.ContainsKey(selectedPilotName))
+            IPilot pilot = this.pilots.FirstOrDefault(p => p.Name == selectedPilotName);
+
+            if (pilot == null)
             {
-                return $"Pilot {selectedPilotName} could not be found";
+                return string.Format(OutputMessages.PilotNotFound, selectedPilotName);
             }
 
-            if (!machines.ContainsKey(selectedMachineName))
+            IMachine machine = this.machines.FirstOrDefault(m => m.Name == selectedMachineName);
+
+            if (machine == null)
             {
-                return $"Machine {selectedMachineName} could not be found";
+                return string.Format(OutputMessages.MachineNotFound, selectedMachineName);
             }
 
-            if (machines[selectedMachineName].Pilot != null)
+            if (machine.Pilot != null)
             {
-                return $"Machine {selectedMachineName} is already occupied";
+                return string.Format(OutputMessages.MachineHasPilotAlready, selectedMachineName);
             }
 
-            machines[selectedMachineName].Pilot = pilots[selectedPilotName];
+            machine.Pilot = pilot;
+            pilot.AddMachine(machine);
 
-            pilots[selectedPilotName].AddMachine(machines[selectedMachineName]);
-
-            return $"Pilot {selectedPilotName} engaged machine {selectedMachineName}";
+            return string.Format(OutputMessages.MachineEngaged, selectedPilotName, selectedMachineName);
         }
 
         public string AttackMachines(string attackingMachineName, string defendingMachineName)
         {
-            if (!machines.ContainsKey(attackingMachineName))
+            IMachine attackingMachine = this.machines.FirstOrDefault(m => m.Name == attackingMachineName);
+            IMachine defendingMachine = this.machines.FirstOrDefault(m => m.Name == defendingMachineName);
+
+            if (attackingMachine == null)
             {
-                return $"Machine {attackingMachineName} could not be found";
+                return string.Format(OutputMessages.MachineNotFound, attackingMachineName);
             }
 
-            if (!machines.ContainsKey(defendingMachineName))
+            if (defendingMachine == null)
             {
-                return $"Machine {defendingMachineName} could not be found";
+                return string.Format(OutputMessages.MachineNotFound, defendingMachineName);
             }
 
-            if (machines[defendingMachineName].HealthPoints == 0)
+            if (attackingMachine.HealthPoints <= 0)
             {
-                return $"Dead machine {defendingMachineName} cannot attack or be attacked";
+                return string.Format(OutputMessages.DeadMachineCannotAttack, attackingMachineName);
             }
 
-            if (machines[attackingMachineName].HealthPoints==0)
+            if (defendingMachine.HealthPoints <= 0)
             {
-                return $"Dead machine {attackingMachineName} cannot attack or be attacked";
-            }
-            
-            double attackPoints = machines[attackingMachineName].AttackPoints;
-
-            attackPoints -= machines[defendingMachineName].DefensePoints;
-
-            if (attackPoints > 0)
-            {
-                machines[defendingMachineName].HealthPoints -= attackPoints;
-            }
-            else
-            {
-                attackPoints = 0;
+                return string.Format(OutputMessages.DeadMachineCannotAttack, defendingMachineName);
             }
 
-            if (machines[defendingMachineName].HealthPoints <= 0)
-            {
-                machines[defendingMachineName].HealthPoints = 0;
-            }
+            attackingMachine.Attack(defendingMachine);
 
-            if (!machines[attackingMachineName].Targets.Contains(machines[defendingMachineName].Name))
-            {
-                machines[attackingMachineName].Targets.Add(machines[defendingMachineName].Name);
-            }
-           
-            return
-                $"Machine {defendingMachineName} was attacked by machine {attackingMachineName} - current health: {machines[defendingMachineName].HealthPoints:F2}";
+            return string.Format(OutputMessages.AttackSuccessful, defendingMachineName, attackingMachineName, defendingMachine.HealthPoints);
         }
     }
 }

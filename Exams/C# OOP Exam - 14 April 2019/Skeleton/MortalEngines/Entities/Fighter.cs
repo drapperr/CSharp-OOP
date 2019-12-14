@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MortalEngines.Entities.Contracts;
-
-namespace MortalEngines.Entities
+﻿namespace MortalEngines.Entities
 {
-    public class Fighter : BaseMachine,IFighter
+    using System;
+
+    using Contracts;
+
+    public class Fighter : BaseMachine, IFighter
     {
-        private const double initialHealthPoints = 200;
-        private bool aggressiveMode;
+        private const double InitialHealthPoints = 200;
 
         public Fighter(string name, double attackPoints, double defensePoints)
-            : base(name, attackPoints, defensePoints, initialHealthPoints)
+            : base(name, attackPoints, defensePoints, InitialHealthPoints)
         {
-            this.aggressiveMode = false;   
+            this.AggressiveMode = false;
             this.ToggleAggressiveMode();
         }
 
-        public bool AggressiveMode => this.aggressiveMode;
+        public bool AggressiveMode { get; private set; }
 
         public void ToggleAggressiveMode()
         {
-            this.aggressiveMode = !this.aggressiveMode;
+            this.AggressiveMode = !this.AggressiveMode;
 
-            if (aggressiveMode)
+            if (this.AggressiveMode)
             {
                 this.AttackPoints += 50;
                 this.DefensePoints -= 25;
@@ -38,11 +36,13 @@ namespace MortalEngines.Entities
         public override string ToString()
         {
             string mode = "OFF";
-            if (aggressiveMode)
+
+            if (this.AggressiveMode)
             {
                 mode = "ON";
             }
-            return base.ToString() + $" *Aggressive: {mode}";
+
+            return base.ToString() + Environment.NewLine + $" *Aggressive: {mode}";
         }
     }
 }

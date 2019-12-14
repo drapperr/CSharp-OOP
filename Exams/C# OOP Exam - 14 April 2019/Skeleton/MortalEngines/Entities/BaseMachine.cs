@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MortalEngines.Entities.Contracts;
-
-namespace MortalEngines.Entities
+﻿namespace MortalEngines.Entities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    using Contracts;
+
     public abstract class BaseMachine : IMachine
     {
         private string name;
@@ -26,7 +27,7 @@ namespace MortalEngines.Entities
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentNullException("Machine name cannot be null or empty.");
+                    throw new ArgumentNullException(nameof(Name), "Machine name cannot be null or empty.");
                 }
 
                 this.name = value;
@@ -43,7 +44,7 @@ namespace MortalEngines.Entities
                     throw new NullReferenceException("Pilot cannot be null.");
                 }
 
-                pilot = value;
+                this.pilot = value;
             }
         }
 
@@ -57,29 +58,33 @@ namespace MortalEngines.Entities
 
         public void Attack(IMachine target)
         {
-            if (target==null)
+            if (target == null)
             {
                 throw new NullReferenceException("Target cannot be null");
             }
+
+            double attack = Math.Max(this.AttackPoints - target.DefensePoints, 0);
+            target.HealthPoints = Math.Max(target.HealthPoints - attack, 0);
+
+            this.Targets.Add(target.Name);
         }
 
         public override string ToString()
         {
-            var sb=new StringBuilder();
-            sb.AppendLine($"- {this.name}");
+            var sb = new StringBuilder();
+            sb.AppendLine($"- {this.Name}");
             sb.AppendLine($" *Type: {this.GetType().Name}");
             sb.AppendLine($" *Health: {this.HealthPoints:F2}");
             sb.AppendLine($" *Attack: {this.AttackPoints:F2}");
             sb.AppendLine($" *Defense: {this.DefensePoints:F2}");
             sb.Append(" *Targets: ");
-
-            if (this.Targets.Count==0)
+            if (this.Targets.Count == 0)
             {
-                sb.AppendLine("None");
+                sb.Append("None");
             }
             else
             {
-                sb.AppendLine(string.Join(",",this.Targets));
+                sb.Append(string.Join(",", this.Targets));
             }
 
             return sb.ToString();

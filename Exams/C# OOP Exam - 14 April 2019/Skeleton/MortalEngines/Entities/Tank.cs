@@ -1,26 +1,27 @@
-﻿using MortalEngines.Entities.Contracts;
-
-namespace MortalEngines.Entities
+﻿namespace MortalEngines.Entities
 {
+    using System;
+
+    using Contracts;
+
     public class Tank : BaseMachine, ITank
     {
-        private const double initialHealthPoints = 100;
-        private bool defenseMode;
+        private const double InitialHealthPoints = 100;
 
         public Tank(string name, double attackPoints, double defensePoints)
-            : base(name, attackPoints, defensePoints, initialHealthPoints)
+            : base(name, attackPoints, defensePoints, InitialHealthPoints)
         {
-            this.defenseMode = false;
+            this.DefenseMode = false;
             this.ToggleDefenseMode();
         }
 
-        public bool DefenseMode => this.defenseMode;
+        public bool DefenseMode { get; private set; }
 
         public void ToggleDefenseMode()
         {
-            this.defenseMode = !this.defenseMode;
+            this.DefenseMode = !this.DefenseMode;
 
-            if (defenseMode)
+            if (this.DefenseMode)
             {
                 this.AttackPoints -= 40;
                 this.DefensePoints += 30;
@@ -36,12 +37,12 @@ namespace MortalEngines.Entities
         {
             string mode = "OFF";
 
-            if (defenseMode)
+            if (this.DefenseMode)
             {
                 mode = "ON";
             }
 
-            return base.ToString() + $" *Defense: {mode}";
+            return base.ToString() + Environment.NewLine + $" *Defense: {mode}";
         }
     }
 }
