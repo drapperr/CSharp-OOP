@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using MXGP.Models.Races.Contracts;
-using MXGP.Models.Riders.Contracts;
-
-namespace MXGP.Models.Races
+﻿namespace MXGP.Models.Races
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Contracts;
+    using MXGP.Models.Riders.Contracts;
+    using Utilities.Messages;
+
     public class Race : IRace
     {
         private string name;
@@ -23,9 +25,9 @@ namespace MXGP.Models.Races
             get => this.name;
             private set
             {
-                if (string.IsNullOrWhiteSpace(value) || value.Length < 5)
+                if (string.IsNullOrEmpty(value) || value.Length < 5)
                 {
-                    throw new ArgumentException($"Name {value} cannot be less than 5 symbols.");
+                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidName, value, 5));
                 }
 
                 this.name = value;
@@ -39,7 +41,7 @@ namespace MXGP.Models.Races
             {
                 if (value < 1)
                 {
-                    throw new ArgumentException("Laps cannot be less than 1.");
+                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidNumberOfLaps, 1));
                 }
 
                 this.laps = value;
@@ -50,22 +52,22 @@ namespace MXGP.Models.Races
 
         public void AddRider(IRider rider)
         {
-            if (rider == null)
+            if (rider==null)
             {
-                throw new ArgumentNullException(nameof(rider),"Rider cannot be null.");
+                throw new ArgumentException(ExceptionMessages.RiderInvalid);
             }
 
             if (!rider.CanParticipate)
             {
-                throw new ArgumentException($"Rider {rider.Name} could not participate in race.");
+                throw new ArgumentException(string.Format(ExceptionMessages.RiderNotParticipate,rider.Name));
             }
 
-            if (riders.Contains(rider))
+            if (this.riders.Contains(rider))
             {
-                throw new ArgumentNullException(nameof(rider),$"Rider {rider.Name} is already added in {this.name} race.");
+                throw new ArgumentNullException(nameof(rider),string.Format(ExceptionMessages.RiderExists,rider.Name,this.Name));
             }
 
-            riders.Add(rider);
+            this.riders.Add(rider);
         }
     }
 }

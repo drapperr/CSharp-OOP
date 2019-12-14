@@ -1,85 +1,101 @@
-﻿using System;
-using MortalEngines.Core.Contracts;
-
-namespace MortalEngines.Core
+﻿namespace MortalEngines.Core
 {
+    using System;
+
+    using Contracts;
+
     public class Engine : IEngine
     {
-        private IMachinesManager machinesManager;
+        private readonly IMachinesManager machinesManager;
 
         public Engine()
         {
-            machinesManager = new MachinesManager();
+            this.machinesManager = new MachinesManager();
         }
+
         public void Run()
         {
-            string input = Console.ReadLine();
-
             while (true)
             {
-                string[] inputArgs = input.Split(" ");
-                string command = inputArgs[0];
+                string[] input = Console.ReadLine().Split(' ');
+
+                string command = input[0];
 
                 try
                 {
                     string result = string.Empty;
 
-                    switch (command)
+                    if (command == "Quit")
                     {
-                        case "HirePilot":
-                            result = machinesManager.HirePilot(inputArgs[1]);
-                            break;
+                        Environment.Exit(0);
+                    }
+                    else if (command == "HirePilot")
+                    {
+                        string name = input[1];
 
-                        case "PilotReport":
-                            result = machinesManager.PilotReport(inputArgs[1]);
-                            break;
+                        result = this.machinesManager.HirePilot(name);
+                    }
+                    else if (command == "PilotReport")
+                    {
+                        string name = input[1];
 
-                        case "ManufactureTank":
-                            result = machinesManager.ManufactureTank(inputArgs[1],
-                                double.Parse(inputArgs[2]),
-                                double.Parse(inputArgs[3]));
-                            break;
+                        result = this.machinesManager.PilotReport(name);
+                    }
+                    else if (command == "ManufactureTank")
+                    {
+                        string name = input[1];
+                        double attack = double.Parse(input[2]);
+                        double defense = double.Parse(input[3]);
 
-                        case "ManufactureFighter":
-                            result = machinesManager.ManufactureFighter(inputArgs[1],
-                                double.Parse(inputArgs[2]),
-                                double.Parse(inputArgs[3]));
-                            break;
+                        result = this.machinesManager.ManufactureTank(name, attack, defense);
+                    }
+                    else if (command == "ManufactureFighter")
+                    {
+                        string name = input[1];
+                        double attack = double.Parse(input[2]);
+                        double defense = double.Parse(input[3]);
 
-                        case "MachineReport":
-                            result = machinesManager.MachineReport(inputArgs[1]);
-                            break;
+                        result = this.machinesManager.ManufactureFighter(name, attack, defense);
+                    }
+                    else if (command == "MachineReport")
+                    {
+                        string name = input[1];
 
-                        case "AggressiveMode":
-                            result = machinesManager.ToggleFighterAggressiveMode(inputArgs[1]);
-                            break;
+                        result = this.machinesManager.MachineReport(name);
+                    }
+                    else if (command == "AggressiveMode")
+                    {
+                        string name = input[1];
 
-                        case "DefenseMode":
-                            result = machinesManager.ToggleTankDefenseMode(inputArgs[1]);
-                            break;
+                        result = this.machinesManager.ToggleFighterAggressiveMode(name);
+                    }
+                    else if (command == "DefenseMode")
+                    {
+                        string name = input[1];
 
-                        case "Engage":
-                            result = machinesManager.EngageMachine(inputArgs[1],
-                                inputArgs[2]);
-                            break;
+                        result = this.machinesManager.ToggleTankDefenseMode(name);
+                    }
+                    else if (command == "Engage")
+                    {
+                        string pilotName = input[1];
+                        string machineName = input[2];
 
-                        case "Attack":
-                            result=machinesManager.AttackMachines(inputArgs[1],
-                                inputArgs[2]);
-                            break;
+                        result = this.machinesManager.EngageMachine(pilotName, machineName);
+                    }
+                    else if (command == "Attack")
+                    {
+                        string attackName = input[1];
+                        string defenseName = input[2];
 
-                        case "Quit":
-                            Environment.Exit(0);
-                            break;
+                        result = this.machinesManager.AttackMachines(attackName, defenseName);
                     }
 
                     Console.WriteLine(result);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Error:" + e.Message);
+                    Console.WriteLine("Error: " + ex.Message);
                 }
-                input = Console.ReadLine();
             }
         }
     }

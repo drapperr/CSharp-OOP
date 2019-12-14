@@ -1,9 +1,10 @@
-﻿using System;
-using MXGP.Models.Motorcycles.Contracts;
-using MXGP.Models.Riders.Contracts;
-
-namespace MXGP.Models.Riders
+﻿namespace MXGP.Models.Riders
 {
+    using System;
+    using MXGP.Models.Motorcycles.Contracts;
+    using Contracts;
+    using MXGP.Utilities.Messages;
+
     public class Rider : IRider
     {
         private string name;
@@ -11,6 +12,7 @@ namespace MXGP.Models.Riders
         public Rider(string name)
         {
             this.Name = name;
+            this.NumberOfWins = 0;
         }
 
         public string Name
@@ -18,9 +20,9 @@ namespace MXGP.Models.Riders
             get => this.name;
             private set
             {
-                if (string.IsNullOrWhiteSpace(value) || value.Length < 5)
+                if (string.IsNullOrEmpty(value) || value.Length < 5)
                 {
-                    throw new ArgumentException($"Name {value} cannot be less than 5 symbols.");
+                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidName, value, 5));
                 }
 
                 this.name = value;
@@ -31,7 +33,7 @@ namespace MXGP.Models.Riders
 
         public int NumberOfWins { get; private set; }
 
-        public bool CanParticipate => Motorcycle != null;
+        public bool CanParticipate => this.Motorcycle != null;
 
         public void WinRace()
         {
@@ -40,7 +42,12 @@ namespace MXGP.Models.Riders
 
         public void AddMotorcycle(IMotorcycle motorcycle)
         {
-            this.Motorcycle = motorcycle ?? throw new ArgumentNullException(nameof(motorcycle),"Motorcycle cannot be null.");
+            if (motorcycle == null)
+            {
+                throw new ArgumentNullException(nameof(motorcycle), ExceptionMessages.MotorcycleInvalid);
+            }
+
+            this.Motorcycle = motorcycle;
         }
     }
 }

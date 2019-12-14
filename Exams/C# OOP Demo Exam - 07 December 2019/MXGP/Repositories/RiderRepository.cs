@@ -1,13 +1,32 @@
-﻿using System.Linq;
-using MXGP.Models.Riders.Contracts;
-
-namespace MXGP.Repositories
+﻿namespace MXGP.Repositories
 {
-    public class RiderRepository : Repository<IRider>
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using MXGP.Models.Riders.Contracts;
+    using Contracts;
+
+    public class RiderRepository:IRepository<IRider>
     {
-        public override IRider GetByName(string name)
+        private readonly List<IRider> models;
+
+        public RiderRepository()
         {
-            return models.FirstOrDefault(x => x.Name == name);
+            this.models = new List<IRider>();
+        }
+
+        public IRider GetByName(string name) => this.models.FirstOrDefault(x => x.Name == name);
+
+        public IReadOnlyCollection<IRider> GetAll() => this.models.AsReadOnly();
+
+        public void Add(IRider model)
+        {
+            this.models.Add(model);
+        }
+
+        public bool Remove(IRider model)
+        {
+            return this.models.Remove(model);
         }
     }
 }
