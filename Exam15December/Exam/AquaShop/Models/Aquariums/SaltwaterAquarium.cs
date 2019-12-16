@@ -1,8 +1,9 @@
-﻿using System;
-using AquaShop.Models.Fish.Contracts;
-
-namespace AquaShop.Models.Aquariums
+﻿namespace AquaShop.Models.Aquariums
 {
+    using System;
+
+    using AquaShop.Models.Fish.Contracts;
+
     public class SaltwaterAquarium : Aquarium
     {
 
