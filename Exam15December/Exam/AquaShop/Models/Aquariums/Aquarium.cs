@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AquaShop.Models.Aquariums.Contracts;
-using AquaShop.Models.Decorations.Contracts;
-using AquaShop.Models.Fish.Contracts;
-
-namespace AquaShop.Models.Aquariums
+﻿namespace AquaShop.Models.Aquariums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using Contracts;
+    using AquaShop.Models.Decorations.Contracts;
+    using AquaShop.Models.Fish.Contracts;
+
     public abstract class Aquarium : IAquarium
     {
         private string name;
