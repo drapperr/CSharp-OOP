@@ -2,15 +2,15 @@
 {
     using System;
 
-    using AquaShop.IO;
+    using IO;
     using AquaShop.IO.Contracts;
-    using AquaShop.Core.Contracts;
+    using Contracts;
 
     public class Engine : IEngine
     {
-        private IWriter writer;
-        private IReader reader;
-        private IController controller;
+        private readonly IWriter writer;
+        private readonly IReader reader;
+        private readonly IController controller;
 
         public Engine()
         {

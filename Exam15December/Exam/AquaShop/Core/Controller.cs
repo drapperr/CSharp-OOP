@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AquaShop.Core.Contracts;
-using AquaShop.Models.Aquariums;
-using AquaShop.Models.Aquariums.Contracts;
-using AquaShop.Models.Decorations;
-using AquaShop.Models.Decorations.Contracts;
-using AquaShop.Models.Fish;
-using AquaShop.Models.Fish.Contracts;
-using AquaShop.Repositories;
-using AquaShop.Repositories.Contracts;
-
-namespace AquaShop.Core
+﻿namespace AquaShop.Core
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using Contracts;
+    using Models.Aquariums;
+    using AquaShop.Models.Aquariums.Contracts;
+    using Models.Decorations;
+    using AquaShop.Models.Decorations.Contracts;
+    using Models.Fish;
+    using AquaShop.Models.Fish.Contracts;
+    using Repositories;
+    using AquaShop.Repositories.Contracts;
+
     public class Controller : IController
     {
         private readonly IRepository<IDecoration> decorationRepository;
@@ -83,7 +84,7 @@ namespace AquaShop.Core
             this.decorationRepository.Remove(decoration);
 
             return $"Successfully added {decorationType} to {aquariumName}.";
-        }//todo
+        }
 
         public string AddFish(string aquariumName, string fishType, string fishName, string fishSpecies, decimal price)//todo
         {
