@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BattleCards.Data
 {
@@ -16,6 +13,12 @@ namespace BattleCards.Data
         {
         }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Card> Cards { get; set; }
+
+        public DbSet<UserCard> UserCards { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -26,14 +29,9 @@ namespace BattleCards.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserCard>().HasKey(x => new { x.UserId, x.CardId });
+            modelBuilder.Entity<UserCard>(e => e.HasKey(k => new { k.UserId, k.CardId }));
+
             base.OnModelCreating(modelBuilder);
         }
-
-        public DbSet<User> Users { get; set; }
-
-        public DbSet<Card> Cards { get; set; }
-
-        public DbSet<UserCard> UserCards { get; set; }
     }
 }
