@@ -58,7 +58,9 @@ namespace BattleCards.Controllers
                 return this.Error("Invalid description");
             }
 
-            cardService.Add(inputCard);
+            var cardId= cardService.Add(inputCard);
+
+            cardService.AddCardToCollection(this.GetUserId(), cardId);
 
             return this.Redirect("/Cards/All");
         }
@@ -81,7 +83,40 @@ namespace BattleCards.Controllers
                 return this.Redirect("/");
             }
 
-            return this.View(new List<CardViewModel>());
+            var cards = cardService.GetMyCollection(this.GetUserId());
+
+            return this.View(cards);
+        }
+
+        public HttpResponse AddToCollection(int cardId)
+        {
+            if (!this.IsUserSignedIn())
+            {
+                return this.Redirect("/");
+            }
+
+            var userId = this.GetUserId();
+
+            if (cardService.UserHasCard(userId,cardId))
+            {
+                return this.Redirect("/Cards/All");
+            }
+
+            cardService.AddCardToCollection(userId, cardId);
+
+            return this.Redirect("/Cards/All");
+        }
+
+        public HttpResponse RemoveFromCollection(int cardId)
+        {
+            if (!this.IsUserSignedIn())
+            {
+                return this.Redirect("/");
+            }
+
+            cardService.RemoveCardFromCollection(this.GetUserId(), cardId);
+
+            return this.Redirect("/Cards/Collection");
         }
     }
 }
